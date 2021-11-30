@@ -1,5 +1,6 @@
 package com.example.taskapp37.ui.home;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.ViewModelProvider;
@@ -50,6 +52,8 @@ public class HomeFragment extends Fragment {
                         adapter.removeItem(news, p);
                     }
                 });
+                @SuppressLint("InflateParams") ConstraintLayout constraintLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.item_alert_dialog,null);
+                builder.setView(constraintLayout);
                 AlertDialog dialog =builder.create();
                 dialog.show();
             }
