@@ -34,7 +34,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(list.get(position),onItemClickListener);
         if (position % 2 == 0){
-            binding.title.setBackgroundColor(Color.BLACK);
+            binding.title.setBackgroundColor(Color.GREEN);
 
         }else {
             binding.title.setBackgroundColor(Color.WHITE);
