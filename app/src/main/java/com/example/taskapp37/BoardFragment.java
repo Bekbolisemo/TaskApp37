@@ -53,7 +53,7 @@ public class BoardFragment extends Fragment {
     }
 
     private void btnNext() {
-        binding.btnNext.setOnClickListener(v -> close());
+        binding.btnSkip.setOnClickListener(v -> close());
     }
 
 
@@ -74,9 +74,9 @@ public class BoardFragment extends Fragment {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 if (position == 2)
-                    binding.btnNext.setVisibility(View.GONE);
+                    binding.btnSkip.setVisibility(View.GONE);
                 else
-                    binding.btnNext.setVisibility(View.VISIBLE);
+                    binding.btnSkip.setVisibility(View.VISIBLE);
             }
         });
         adapter.setClickListener(new OnBoardStartClickListener() {
@@ -90,12 +90,4 @@ public class BoardFragment extends Fragment {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
         navController.navigateUp();
     }
-
-//    @Override
-//    public void changePager(int pos) {
-//        if (pos == 3){
-//            binding.btnNext.setVisibility(View.GONE);
-//        }else {
-//            binding.btnNext.setVisibility(View.VISIBLE);
-//        }
 }

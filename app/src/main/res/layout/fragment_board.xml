@@ -13,7 +13,7 @@
         android:layout_height="match_parent" />
 
     <Button
-        android:id="@+id/btnNext"
+        android:id="@+id/btnSkip"
         android:text="@string/skip"
         android:layout_margin="16dp"
         android:textColor="@color/black"

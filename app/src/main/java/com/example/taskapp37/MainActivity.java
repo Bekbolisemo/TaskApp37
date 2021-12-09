@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportActionBar().hide();
                 else
                     getSupportActionBar().show();
-
+                getSupportActionBar().setTitle("TaskApp37");
             }
         });
     }

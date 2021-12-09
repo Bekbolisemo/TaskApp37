@@ -54,7 +54,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            button = itemView.findViewById(R.id.btnNext);
+            button = itemView.findViewById(R.id.btnSkip);
             binding.ptnStart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
