@@ -13,4 +13,5 @@
     <string name="delete">Удаление?</string>
     <string name="skip">Skip</string>
     <string name="start">start</string>
+    <string name="name">Name</string>
 </resources>

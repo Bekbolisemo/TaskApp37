@@ -46,4 +46,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     //Библиотека дот-индикатор
      implementation 'com.tbuonomo:dotsindicator:4.2'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 }

@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        if (true)
+        Prefs prefs = new Prefs(this);
+        if (!prefs.isBoardShown())
             navController.navigate(R.id.boardFragment);
 
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
@@ -41,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                 if (destination.getId() == R.id.navigation_home ||
                         destination.getId() == R.id.navigation_dashboard ||
-                        destination.getId() ==R.id.navigation_notifications ||
-                destination.getId() == R.id.profileFragment) {
+                        destination.getId() == R.id.navigation_notifications ||
+                        destination.getId() == R.id.profileFragment) {
                     binding.navView.setVisibility(View.VISIBLE);
                 } else {
                     binding.navView.setVisibility(View.GONE);
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 getSupportActionBar().setTitle("TaskApp37");
             }
         });
+
     }
+
 
 }

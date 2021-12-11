@@ -33,7 +33,7 @@ public class BoardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentBoardBinding.inflate(inflater , container,false);
+        binding = FragmentBoardBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -86,8 +86,12 @@ public class BoardFragment extends Fragment {
             }
         });
     }
+
     private void close() {
+        Prefs prefs = new Prefs(requireActivity());
+        prefs.saveBoardState();
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
         navController.navigateUp();
+
     }
 }
