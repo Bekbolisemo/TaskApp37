@@ -6,40 +6,44 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.taskapp37.MainActivity;
+import com.example.taskapp37.App;
 import com.example.taskapp37.R;
 import com.example.taskapp37.databinding.FragmentHomeBinding;
 import com.example.taskapp37.interfaces.OnItemClickListener;
 import com.example.taskapp37.modals.News;
 
+import java.util.List;
+
 public class HomeFragment extends Fragment {
     private NewsAdapter adapter;
-
     private FragmentHomeBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new NewsAdapter();
+        List<News> list = App.getInstance().getDatabase().newsDao().getAll();
+     //   App.getInstance().getDatabase().newsDao().sort();
+        adapter.addItems(list);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onClick(int p) {
                 News news = adapter.getItem(p);
-                Toast.makeText(requireContext(),news.getTitle() , Toast.LENGTH_SHORT).show();
+                openFragment(news);
             }
 
             @Override
@@ -50,15 +54,18 @@ public class HomeFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         News news = adapter.getItem(p);
                         adapter.removeItem(news, p);
+                        App.getInstance().getDatabase().newsDao().delete(news);
                     }
                 });
-                @SuppressLint("InflateParams") ConstraintLayout constraintLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.item_alert_dialog,null);
+                @SuppressLint("InflateParams") ConstraintLayout constraintLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.item_alert_dialog, null);
                 builder.setView(constraintLayout);
-                AlertDialog dialog =builder.create();
+                AlertDialog dialog = builder.create();
+
                 dialog.show();
             }
         });
 
+        setHasOptionsMenu(true);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -69,17 +76,26 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         binding.fab.setOnClickListener(v -> {
-            openFragment();
+            openFragment(null);
         });
-        getParentFragmentManager().setFragmentResultListener("rk_news", getViewLifecycleOwner(), new FragmentResultListener() {
+       getParentFragmentManager().setFragmentResultListener("rk_news_add", getViewLifecycleOwner(), new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 News news = (News) result.getSerializable("news");
-                Log.e("Home","text= "+ news.getTitle());
+                Log.e("Home", "text= " + news.getTitle());
                 adapter.addItem(news);
             }
         });
+        getParentFragmentManager().setFragmentResultListener("rk_news_update", getViewLifecycleOwner(), new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                News news = (News) result.getSerializable("news");
+                Log.e("Home", "text= " + news.getTitle());
+                adapter.updateItem(news);
+            }
+        });
         return root;
+
     }
 
 
@@ -94,14 +110,38 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void openFragment(){
+    private void openFragment(News news) {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
-        navController.navigate(R.id.newsFragment);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("news", news);
+        navController.navigate(R.id.newsFragment, bundle);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.home,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_sort){
+            getSotrted();
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    private void getSotrted() {
+        List<News> list = App.getInstance().getDatabase().newsDao().sort();
+        adapter.addItems(list);
+
     }
 }

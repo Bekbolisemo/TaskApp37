@@ -12,9 +12,9 @@ import com.example.taskapp37.databinding.ItemBoardBinding;
 import com.example.taskapp37.interfaces.OnBoardStartClickListener;
 
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
-    private String[] title = new String[]{"1", "2", "3"};
-    private String[] decs = new String[]{"Description1", "Description2", "Description3"};
-    private int[] image = new int[]{R.drawable.ic_bird, R.drawable.ic_car, R.drawable.ic__puma};
+    private final String[] title = new String[]{"1", "2", "3"};
+    private final String[] decs = new String[]{"Description1", "Description2", "Description3"};
+    private final int[] lottie = new int[]{R.raw.settings,R.raw.laptop,R.raw.car};
     private ItemBoardBinding binding;
 
 
@@ -65,7 +65,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
 
         public void bind(int position) {
             binding.textTitle.setText(title[position]);
-            binding.imageView.setImageResource(image[position]);
+            binding.lottieView.setAnimation(lottie[position]);
             binding.textDesc.setText(decs[position]);
             if (position == title.length - 1) {
                 binding.ptnStart.setVisibility(View.VISIBLE);

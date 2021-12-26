@@ -18,6 +18,7 @@ import com.example.taskapp37.modals.News;
 
 public class NewsFragment extends Fragment {
     private FragmentNewsBinding binding;
+    private News news;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,6 +30,12 @@ public class NewsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        news = (News) requireArguments().getSerializable("news");
+
+
+        if (news != null)
+            binding.editText.setText(news.getTitle());
+
         binding.btnSave.setOnClickListener(v -> {
             save();
         });
@@ -36,11 +43,22 @@ public class NewsFragment extends Fragment {
 
     private void save() {
         String text = binding.editText.getText().toString().trim();
-        News news = new News(text, System.currentTimeMillis());
         Bundle bundle = new Bundle();
-        bundle.putSerializable("news",news);
-        getParentFragmentManager().setFragmentResult("rk_news", bundle);
+        if (news == null) {
+            news = new News(text, System.currentTimeMillis());
+            bundle.putSerializable("news", news);
+            getParentFragmentManager().setFragmentResult("rk_news_add", bundle);
+            App.getInstance().getDatabase().newsDao().insert(news);
+
+        } else {
+            news.setTitle(text);
+            bundle.putSerializable("news", news);
+            getParentFragmentManager().setFragmentResult("rk_news_update", bundle);
+            App.getInstance().getDatabase().newsDao().update(news);
+
+        }
         close();
+
     }
 
     private void close() {

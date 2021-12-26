@@ -13,11 +13,11 @@ import com.example.taskapp37.interfaces.OnItemClickListener;
 import com.example.taskapp37.modals.News;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private ArrayList<News> list;
     private OnItemClickListener onItemClickListener;
-    private ItemNewsBinding binding;
 
     public NewsAdapter() {
         list = new ArrayList<>();
@@ -33,13 +33,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(list.get(position),onItemClickListener);
-        if (position % 2 == 0){
-            binding.title.setBackgroundColor(Color.GREEN);
 
-        }else {
-            binding.title.setBackgroundColor(Color.WHITE);
-        }
-        holder.bind(list.get(position),onItemClickListener);
     }
 
     @Override
@@ -50,6 +44,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public void addItem(News news) {
         list.add(0,news);
         notifyItemInserted(0);
+    }
+    public void updateItem(News news) {
+        int index = list.indexOf(news);
+        list.set(index,news);
+        notifyItemChanged(index);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -65,7 +64,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         notifyItemRemoved(p);
     }
 
+    public void addItems(List<News> list) {
+        this.list.clear();
+        this.list.addAll(list);
+        notifyDataSetChanged();
+    }
+
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private ItemNewsBinding binding;
         public ViewHolder( @NonNull ItemNewsBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;
