@@ -2,7 +2,6 @@ package com.example.taskapp37;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,16 +10,16 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -44,6 +43,7 @@ public class ProfileFragment extends Fragment {
         Prefs prefs = new Prefs(requireContext());
         galileeClick(prefs);
         saveUserName(prefs);
+
 
         if (!prefs.getImageUser().equals("")) {
             Glide.with(binding.imageUser).load(prefs.getImageUser()).circleCrop().into(binding.imageUser);
@@ -81,14 +81,23 @@ public class ProfileFragment extends Fragment {
                     public void onActivityResult(Uri uri) {
                         Glide.with(binding.imageUser).load(uri).circleCrop().into(binding.imageUser);
                         prefs.saveImageUser(uri);
-                        binding.imageUser.setImageURI(uri);
                         change = true;
 
 
                     }
                 });
-
         binding.imageUser.setOnClickListener(v -> {
+            if (!prefs.getImageUser().equals("")) {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+                Bundle bundle = new Bundle();
+                bundle.putString("kay1", prefs.getImageUser());
+                navController.navigate(R.id.imageFragment, bundle);
+
+            } else
+                Toast.makeText(requireContext(), "Фотография отсутствует", Toast.LENGTH_LONG).show();
+        });
+
+        binding.btnCamera.setOnClickListener(v -> {
             if (change) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                 builder.setNeutralButton("Заменить", new DialogInterface.OnClickListener() {
@@ -101,6 +110,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         binding.imageUser.setImageResource(R.drawable.ic_baseline_account_circle_24);
+                        prefs.deleteUserImage();
                     }
                 });
                 AlertDialog dialog = builder.create();
@@ -111,5 +121,11 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 }

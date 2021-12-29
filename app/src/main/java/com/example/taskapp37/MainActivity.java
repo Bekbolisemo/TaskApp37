@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     binding.navView.setVisibility(View.GONE);
                 }
-                if (destination.getId() == R.id.boardFragment)
+                if (destination.getId() == R.id.boardFragment || destination.getId() == R.id.imageFragment)
                     getSupportActionBar().hide();
                 else
                     getSupportActionBar().show();

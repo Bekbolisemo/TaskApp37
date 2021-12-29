@@ -26,6 +26,7 @@ public class Prefs {
     public String getUserName() {
         return preferences.getString("isEmpty", null);
     }
+
     public void saveImageUser(Uri image){
         preferences.edit().putString("isEmptyImage", image.toString()).apply();
     }
@@ -35,4 +36,7 @@ public class Prefs {
     }
 
 
+    public void deleteUserImage() {
+        preferences.edit().remove("isEmptyImage").apply();
+    }
 }
