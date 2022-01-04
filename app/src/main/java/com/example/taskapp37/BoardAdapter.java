@@ -3,7 +3,6 @@ package com.example.taskapp37;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +13,7 @@ import com.example.taskapp37.interfaces.OnBoardStartClickListener;
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> {
     private final String[] title = new String[]{"1", "2", "3"};
     private final String[] decs = new String[]{"Description1", "Description2", "Description3"};
-    private final int[] lottie = new int[]{R.raw.settings,R.raw.laptop,R.raw.car};
+    private final int[] lottie = new int[]{R.raw.settings,R.raw.lock,R.raw.car};
     private ItemBoardBinding binding;
 
 
@@ -44,23 +43,14 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder> 
 
     }
 
-    public int getItem(int pos) {
-        return title.length;
-    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private Button button;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            button = itemView.findViewById(R.id.btnSkip);
-            binding.ptnStart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    clickListener.onStartClick();
-                }
-            });
+            binding.ptnStart.setOnClickListener(v -> clickListener.onStartClick());
         }
 
         public void bind(int position) {

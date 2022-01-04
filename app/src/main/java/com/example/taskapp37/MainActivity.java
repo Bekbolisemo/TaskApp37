@@ -3,13 +3,8 @@ package com.example.taskapp37;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -23,10 +18,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        nav();
 
+    }
+
+    private void nav() {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
                 .build();
@@ -37,25 +35,21 @@ public class MainActivity extends AppCompatActivity {
         if (!prefs.isBoardShown())
             navController.navigate(R.id.boardFragment);
 
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if (destination.getId() == R.id.navigation_home ||
-                        destination.getId() == R.id.navigation_dashboard ||
-                        destination.getId() == R.id.navigation_notifications ||
-                        destination.getId() == R.id.profileFragment) {
-                    binding.navView.setVisibility(View.VISIBLE);
-                } else {
-                    binding.navView.setVisibility(View.GONE);
-                }
-                if (destination.getId() == R.id.boardFragment || destination.getId() == R.id.imageFragment)
-                    getSupportActionBar().hide();
-                else
-                    getSupportActionBar().show();
-                getSupportActionBar().setTitle("TaskApp37");
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.navigation_home ||
+                    destination.getId() == R.id.navigation_dashboard ||
+                    destination.getId() == R.id.navigation_notifications ||
+                    destination.getId() == R.id.profileFragment) {
+                binding.navView.setVisibility(View.VISIBLE);
+            } else {
+                binding.navView.setVisibility(View.GONE);
             }
+            if (destination.getId() == R.id.boardFragment || destination.getId() == R.id.imageFragment)
+                getSupportActionBar().hide();
+            else
+                getSupportActionBar().show();
+            getSupportActionBar().setTitle("TaskApp37");
         });
-
     }
 
 

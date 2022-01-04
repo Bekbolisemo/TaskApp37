@@ -21,7 +21,7 @@ public class NewsFragment extends Fragment {
     private News news;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentNewsBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -36,9 +36,7 @@ public class NewsFragment extends Fragment {
         if (news != null)
             binding.editText.setText(news.getTitle());
 
-        binding.btnSave.setOnClickListener(v -> {
-            save();
-        });
+        binding.btnSave.setOnClickListener(v -> save());
     }
 
     private void save() {

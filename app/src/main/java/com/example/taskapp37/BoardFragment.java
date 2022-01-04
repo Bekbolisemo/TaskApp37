@@ -13,10 +13,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.taskapp37.databinding.FragmentBoardBinding;
-import com.example.taskapp37.interfaces.OnBoardStartClickListener;
 
 
 public class BoardFragment extends Fragment {
@@ -31,7 +29,7 @@ public class BoardFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentBoardBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -79,12 +77,7 @@ public class BoardFragment extends Fragment {
                     binding.btnSkip.setVisibility(View.VISIBLE);
             }
         });
-        adapter.setClickListener(new OnBoardStartClickListener() {
-            @Override
-            public void onStartClick() {
-                close();
-            }
-        });
+        adapter.setClickListener(this::close);
     }
 
     private void close() {

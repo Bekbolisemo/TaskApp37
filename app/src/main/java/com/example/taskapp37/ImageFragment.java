@@ -1,13 +1,11 @@
 package com.example.taskapp37;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,7 @@ public class ImageFragment extends Fragment {
     private FragmentImageBinding binding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentImageBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -29,14 +27,12 @@ public class ImageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.e("image", "be fore: ");
         setImage();
-        Log.e("image", "after ");
     }
 
     private void setImage() {
         String uri = requireArguments().getString("kay1");
-        Glide.with(binding.image).load(uri).circleCrop().into(binding.image);
+        Glide.with(binding.image).load(uri).into(binding.image);
 
     }
 }

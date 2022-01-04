@@ -2,7 +2,6 @@ package com.example.taskapp37.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -49,13 +47,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onLongClick(int p) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                builder.setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        News news = adapter.getItem(p);
-                        adapter.removeItem(news, p);
-                        App.getInstance().getDatabase().newsDao().delete(news);
-                    }
+                builder.setPositiveButton("Удалить", (dialog, which) -> {
+                    News news = adapter.getItem(p);
+                    adapter.removeItem(news, p);
+                    App.getInstance().getDatabase().newsDao().delete(news);
                 });
                 @SuppressLint("InflateParams") ConstraintLayout constraintLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.item_alert_dialog, null);
                 builder.setView(constraintLayout);
@@ -75,24 +70,16 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        binding.fab.setOnClickListener(v -> {
-            openFragment(null);
-        });
-       getParentFragmentManager().setFragmentResultListener("rk_news_add", getViewLifecycleOwner(), new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                News news = (News) result.getSerializable("news");
-                Log.e("Home", "text= " + news.getTitle());
-                adapter.addItem(news);
-            }
-        });
-        getParentFragmentManager().setFragmentResultListener("rk_news_update", getViewLifecycleOwner(), new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                News news = (News) result.getSerializable("news");
-                Log.e("Home", "text= " + news.getTitle());
-                adapter.updateItem(news);
-            }
+        binding.fab.setOnClickListener(v -> openFragment(null));
+       getParentFragmentManager().setFragmentResultListener("rk_news_add", getViewLifecycleOwner(), (requestKey, result) -> {
+           News news = (News) result.getSerializable("news");
+           Log.e("Home", "text= " + news.getTitle());
+           adapter.addItem(news);
+       });
+        getParentFragmentManager().setFragmentResultListener("rk_news_update", getViewLifecycleOwner(), (requestKey, result) -> {
+            News news = (News) result.getSerializable("news");
+            Log.e("Home", "text= " + news.getTitle());
+            adapter.updateItem(news);
         });
         return root;
 
