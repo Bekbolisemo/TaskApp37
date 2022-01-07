@@ -10,7 +10,7 @@
     <string name="password">Password</string>
     <string name="next">Next</string>
     <string name="title">Title</string>
-    <string name="delete">Удаление?</string>
+    <string name="delete">Вы уверены?</string>
     <string name="skip">Skip</string>
     <string name="start">start</string>
     <string name="name">Name</string>
@@ -22,4 +22,8 @@
     <string name="date_of_birth">Date of Birth</string>
     <string name="save">save</string>
     <string name="description">Description</string>
+    <string name="client_id">285131631908–65lt7qikj2u0hq8avemuljigau81kr80.apps.googleusercontent.com</string>
+    <string name="sign_in">Sign in</string>
+    <string name="exit">exit</string>
+
 </resources>

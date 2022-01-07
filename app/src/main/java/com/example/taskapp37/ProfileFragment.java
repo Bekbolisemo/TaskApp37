@@ -1,5 +1,6 @@
 package com.example.taskapp37;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -40,13 +42,28 @@ public class ProfileFragment extends Fragment {
         Prefs prefs = new Prefs(requireContext());
         galileeClick(prefs);
         saveUserName(prefs);
-
+        initClick();
 
         if (!prefs.getImageUser().equals("")) {
             Glide.with(binding.imageUser).load(prefs.getImageUser()).circleCrop().into(binding.imageUser);
             change = true;
         }
 
+    }
+
+    private void initClick() {
+        binding.btnExit.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            builder.setNeutralButton("Отмена",((dialog, which) -> {}));
+            builder.setNegativeButton("Выйти",((dialog, which) -> {
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+                navController.navigate(R.id.loginFragment);
+            }));
+            @SuppressLint("InflateParams") ConstraintLayout constraintLayout  = (ConstraintLayout) getLayoutInflater().inflate(R.layout.item_alert_dialog_2,null);
+            builder.setView(constraintLayout);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
     }
 
 
@@ -99,6 +116,8 @@ public class ProfileFragment extends Fragment {
                     binding.imageUser.setImageResource(R.drawable.ic_baseline_account_circle_24);
                     prefs.deleteUserImage();
                 });
+                @SuppressLint("InflateParams") ConstraintLayout constraintLayout  = (ConstraintLayout) getLayoutInflater().inflate(R.layout.item_alert_dialog,null);
+                builder.setView(constraintLayout);
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 change = false;

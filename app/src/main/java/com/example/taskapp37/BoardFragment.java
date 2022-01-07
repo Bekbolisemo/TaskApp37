@@ -62,7 +62,6 @@ public class BoardFragment extends Fragment {
                 requireActivity().finish();
             }
         });
-
     }
 
     private void initAdapter() {

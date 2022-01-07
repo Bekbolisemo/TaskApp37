@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/drawable/ic__puma.xml" value="0.26614583333333336" />
+        <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/drawable/ic_arrow.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/drawable/ic_bird.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/drawable/ic_camera.xml" value="0.26614583333333336" />
@@ -15,10 +16,12 @@
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/layout/fragment_dashboard.xml" value="0.1526268115942029" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/layout/fragment_home.xml" value="0.17255434782608695" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/layout/fragment_image.xml" value="0.25" />
+        <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/layout/fragment_login.xml" value="0.21829710144927536" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/layout/fragment_news.xml" value="0.17255434782608695" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/layout/fragment_notifications.xml" value="0.25" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/layout/item_alert_dialog.xml" value="0.264" />
+        <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/layout/item_alert_dialog_2.xml" value="0.22418478260869565" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/layout/item_board.xml" value="0.152" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/layout/item_news.xml" value="0.2" />
         <entry key="..\:/Users/beka2/AndroidStudioProjects/TaskApp37-master/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />

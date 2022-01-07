@@ -35,7 +35,6 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         adapter = new NewsAdapter();
         List<News> list = App.getInstance().getDatabase().newsDao().getAll();
-     //   App.getInstance().getDatabase().newsDao().sort();
         adapter.addItems(list);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -47,6 +46,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onLongClick(int p) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                builder.setNeutralButton("Отмена",((dialog, which) -> {}));
                 builder.setPositiveButton("Удалить", (dialog, which) -> {
                     News news = adapter.getItem(p);
                     adapter.removeItem(news, p);

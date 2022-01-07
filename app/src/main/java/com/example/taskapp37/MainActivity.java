@@ -10,6 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.taskapp37.databinding.ActivityMainBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,9 +33,14 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
         Prefs prefs = new Prefs(this);
-        if (!prefs.isBoardShown())
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null)
+            navController.navigate(R.id.loginFragment);
+
+        if (!prefs.isBoardShown()) {
             navController.navigate(R.id.boardFragment);
 
+        }
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.navigation_home ||
                     destination.getId() == R.id.navigation_dashboard ||
@@ -44,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 binding.navView.setVisibility(View.GONE);
             }
-            if (destination.getId() == R.id.boardFragment || destination.getId() == R.id.imageFragment)
+            if (destination.getId() == R.id.boardFragment || destination.getId() == R.id.imageFragment || destination.getId() == R.id.loginFragment)
                 getSupportActionBar().hide();
             else
                 getSupportActionBar().show();
