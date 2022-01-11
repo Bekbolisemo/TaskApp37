@@ -13,6 +13,10 @@ public class News implements Serializable {
     private String title;
     private long createAt;
 
+    public News() {
+
+    }
+
     public News(String title, long createAt) {
         this.title = title;
         this.createAt = createAt;

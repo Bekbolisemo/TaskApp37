@@ -11,9 +11,14 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.taskapp37.databinding.FragmentNewsBinding;
 import com.example.taskapp37.modals.News;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class NewsFragment extends Fragment {
@@ -30,13 +35,17 @@ public class NewsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.progressBar.setVisibility(View.GONE);
         news = (News) requireArguments().getSerializable("news");
 
 
         if (news != null)
             binding.editText.setText(news.getTitle());
 
-        binding.btnSave.setOnClickListener(v -> save());
+        binding.btnSave.setOnClickListener(v -> {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            save();
+        });
     }
 
     private void save() {
@@ -47,7 +56,7 @@ public class NewsFragment extends Fragment {
             bundle.putSerializable("news", news);
             getParentFragmentManager().setFragmentResult("rk_news_add", bundle);
             App.getInstance().getDatabase().newsDao().insert(news);
-
+            addToFireStore();
         } else {
             news.setTitle(text);
             bundle.putSerializable("news", news);
@@ -55,8 +64,24 @@ public class NewsFragment extends Fragment {
             App.getInstance().getDatabase().newsDao().update(news);
 
         }
-        close();
 
+
+    }
+
+    private void addToFireStore() {
+        FirebaseFirestore.getInstance()
+                .collection("news")
+                .add(news).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(requireContext(), "Failure", Toast.LENGTH_SHORT).show();
+                }
+                close();
+            }
+        });
     }
 
     private void close() {

@@ -25,8 +25,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -37,8 +40,12 @@ public class LoginFragment extends Fragment {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
 
+
+
     @Override
+
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
     }
 
@@ -61,22 +68,8 @@ public class LoginFragment extends Fragment {
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         resultLauncher.launch(signInIntent);
+
     }
-
-    ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> {
-
-                try {
-                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                    // Google Sign In was successful, authenticate with Firebase
-                    GoogleSignInAccount account = task.getResult(ApiException.class);
-                    firebaseAuthWithGoogle(account);
-                } catch (ApiException e) {
-                    // Google Sign In failed, update UI appropriately
-                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_LONG).show();
-                }
-
-            });
     private void finish() {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
@@ -85,29 +78,52 @@ public class LoginFragment extends Fragment {
             }
         });
     }
+    ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+
+                try {
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                    // Google Sign In was successful, authenticate with Firebase
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    Log.d("hamal", "firebaseAuthWithGoogle:" + account.getId());
+                    firebaseAuthWithGoogle(account);
+                } catch (ApiException e) {
+                    // Google Sign In failed, update UI appropriately
+                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+
+            });
+
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnSuccessListener(authResult -> {
-                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                    //String uid = firebaseUser.getUid();
-                    String email = firebaseUser.getEmail();
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(@NonNull AuthResult authResult) {
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        String email = firebaseUser.getEmail();
 
-                    if (authResult.getAdditionalUserInfo().isNewUser()) {
-                        Toast.makeText(requireContext(), "Account Created\n" + email, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(requireContext(), "Existing user\n" + email, Toast.LENGTH_SHORT).show();
+                        if (authResult.getAdditionalUserInfo().isNewUser()){
+                            Toast.makeText(requireContext(), "Account Created\n"+ email , Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(requireContext(), "Existing user\n"+ email, Toast.LENGTH_SHORT).show();
+                        }
+                        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+                        navController.navigateUp();
                     }
-
-                    NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
-                    navController.navigateUp();
-                }).addOnFailureListener(e -> Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show());
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 
     private void initGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.client_id))
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
